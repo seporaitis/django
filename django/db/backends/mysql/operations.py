@@ -143,7 +143,8 @@ class DatabaseOperations(BaseDatabaseOperations):
         # See MySQLdb/cursors.py in the source distribution.
         query = getattr(cursor, '_executed', None)
         if query is not None:
-            query = query.decode(errors='replace')
+            if isinstance(query, (bytes, bytearray)):
+                query = query.decode(errors='replace')
         return query
 
     def no_limit_value(self):
